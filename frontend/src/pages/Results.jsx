@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../utils/axios';
 import AdminLayout from '../components/AdminLayout';
 import toast from 'react-hot-toast';
 import { Download } from 'lucide-react';
@@ -43,7 +43,11 @@ const Results = () => {
       link.remove();
       toast.success('PDF downloaded successfully');
     } catch (error) {
-      toast.error('Error downloading PDF');
+      if (error.response?.status === 401) {
+        toast.error('Session expired. Please log in again.');
+      } else {
+        toast.error('Error downloading PDF');
+      }
     }
   };
 
